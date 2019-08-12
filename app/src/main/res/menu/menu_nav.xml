@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_game"
+        android:title="Game"
+        android:icon="@drawable/ic_action_game" />
+
+    <item android:id="@+id/nav_player"
+        android:title="Players"
+        android:icon="@drawable/ic_action_player" />
+
+
+
+</menu>

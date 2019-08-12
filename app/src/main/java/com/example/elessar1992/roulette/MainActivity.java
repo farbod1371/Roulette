@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity
                             hashMap.put("uid", userID);
                             hashMap.put("username", "");
                             hashMap.put("name", "");
+                            hashMap.put("score","");
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
 
