@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1060930958064",
+    "firebase_url": "https://roulette-f0f1d.firebaseio.com",
+    "project_id": "roulette-f0f1d",
+    "storage_bucket": "roulette-f0f1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060930958064:android:eb54d45a578a3d5d",
+        "android_client_info": {
+          "package_name": "com.example.elessar1992.roulette"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060930958064-jm6jj3cqdks4mobnmnn3uu87o0i1i115.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.elessar1992.roulette",
+            "certificate_hash": "77252cdaff99f25459e5c51db469e5eb88241f77"
+          }
+        },
+        {
+          "client_id": "1060930958064-9s7ocb1mdpfso8b06r0v3o6qgqiniulb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw8KQOkl771RdtfoovdFPenQ8zoCVy-cI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060930958064-9s7ocb1mdpfso8b06r0v3o6qgqiniulb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
