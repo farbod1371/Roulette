@@ -17,23 +17,31 @@
         android:layout_centerVertical="true"
         app:srcCompat="@drawable/roulette" />
 
+    <TextView
+        android:id="@+id/textViewUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_marginStart="17dp"
+        android:layout_toEndOf="@+id/floatingActionButton"
+        android:text="TextView" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/wheelId"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
+        android:layout_alignStart="@+id/textView1"
+        android:layout_alignTop="@+id/floatingActionButton"
+        android:layout_marginStart="26dp"
         android:text="Spin" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:text="TextView"
-        android:textSize="32dp" />
 
     <ImageView
         android:id="@+id/pointerId"
@@ -44,21 +52,36 @@
         android:layout_marginTop="106dp"
         app:srcCompat="@android:drawable/arrow_up_float" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:src="@drawable/ic_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/buttonBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/pointerId"
+        android:layout_alignTop="@+id/button"
+        android:layout_marginEnd="37dp"
+        android:text="Bet" />
+
+    <TextView
+        android:id="@+id/textViewResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewBet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_marginStart="15dp"
-        android:layout_toEndOf="@+id/textView2"
+        android:layout_above="@+id/wheelId"
         android:text="TextView" />
 
 

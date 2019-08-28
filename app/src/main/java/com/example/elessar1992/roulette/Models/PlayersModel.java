@@ -9,18 +9,28 @@ public class PlayersModel
     String name;
     String email;
     String username;
+    String bet;
     String uid;
 
     public PlayersModel(){}
 
-    public PlayersModel(String name, String email, String username) {
+    public PlayersModel(String name, String email, String username,String bet) {
         this.name = name;
         this.email = email;
         this.username = username;
+        this.bet = bet;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getBet() {
+        return bet;
+    }
+
+    public void setBet(String bet) {
+        this.bet = bet;
     }
 
     public String getEmail() {

@@ -1,8 +1,13 @@
 package com.example.elessar1992.roulette;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +15,26 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
+
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -30,11 +47,16 @@ public class GameFragment extends android.support.v4.app.Fragment
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    StorageReference storageReference;
 
+    FloatingActionButton floatingActionButton;
     Button button;
+    Button button2;
     TextView result;
-    TextView textView2;
-    TextView textView3;
+    TextView textViewScore;
+    TextView textViewUser;
+    TextView textView;
+    TextView textViewBet;
     ImageView wheelImage;
     Random r;
     int degree = 0;
@@ -56,9 +78,14 @@ public class GameFragment extends android.support.v4.app.Fragment
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
-        result = view.findViewById(R.id.textView);
+        result = view.findViewById(R.id.textViewResult);
+        //textViewScore = view.findViewById(R.id.textViewScore);
+        textViewBet = view.findViewById(R.id.textViewBet);
+        textViewUser = view.findViewById(R.id.textViewUser);
         wheelImage = view.findViewById(R.id.wheelId);
         button = view.findViewById(R.id.button);
+        button2 = view.findViewById(R.id.buttonBet);
+        floatingActionButton = view.findViewById(R.id.floatingActionButton);
 
         r = new Random();
         button.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +109,12 @@ public class GameFragment extends android.support.v4.app.Fragment
                         int resultShow = (360 - (degree % 360));
                         result.setText(currentNumber(resultShow));
 
+                        if((result.getText().toString().equals(textViewBet.getText().toString())))
+                            Toast.makeText(getActivity(), "you won", Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(getActivity(), "you lost", Toast.LENGTH_LONG).show();
+
+
                     }
 
                     @Override
@@ -90,6 +123,40 @@ public class GameFragment extends android.support.v4.app.Fragment
                     }
                 });
                 wheelImage.startAnimation(rotateAnimation);
+            }
+        });
+
+        Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String username = ""+ ds.child("username").getValue();
+                    String bet = ""+ ds.child("bet").getValue();
+                    textViewUser.setText(username);
+                    textViewBet.setText(bet);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEditBet();
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                showEditProfileDialog();
             }
         });
         return view;
@@ -249,6 +316,74 @@ public class GameFragment extends android.support.v4.app.Fragment
         }
 
         return text;
+    }
+
+    private void showEditBet()
+    {
+        showNamePhoneUpdated("bet");
+    }
+
+    private void showEditProfileDialog()
+    {
+        showNamePhoneUpdated("username");
+    }
+
+    private void showNamePhoneUpdated(final String key)
+    {
+        //key will contain either "name" or "phone"
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("update "+ key); //update either name or phone
+
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10,10,10,10);
+        //editing UI
+        final EditText editText = new EditText(getActivity());
+        editText.setHint("Enter "+key); //name or phone
+        linearLayout.addView(editText);
+        builder.setView(linearLayout);
+
+        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                String value = editText.getText().toString().trim();
+                if(!TextUtils.isEmpty(value))
+                {
+                    Toast.makeText(getActivity(),"Enter "+key, Toast.LENGTH_SHORT).show();
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put(key, value);
+
+                    databaseReference.child(user.getUid()).updateChildren(result)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid)
+                                {
+                                    Toast.makeText(getActivity(), "Updated", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e)
+                                {
+                                    Toast.makeText(getActivity(), ""+e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                }
+                else
+                {
+                    Toast.makeText(getActivity(),"Enter "+key, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 }
